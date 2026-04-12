@@ -1,9 +1,12 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { FeedDeploy } from "../target/types/feed_deploy";
+import * as dotenv from "dotenv";
 
 import { OracleJob, CrossbarClient, type IOracleJob, FeedHash } from "@switchboard-xyz/common";
 import * as sb from "@switchboard-xyz/on-demand";
+
+dotenv.config()
 
 describe("feed-deploy", () => {
     // Configure the client to use the local cluster.
@@ -115,13 +118,15 @@ describe("feed-deploy", () => {
         const [quoteAccount] = sb.OracleQuote.getCanonicalPubkey(depqueue.pubkey, [feedId]);
         console.log("QUOTE ACCOUNT::::", quoteAccount.toBase58());
 
+        console.log(process.env.MASSIVE_API_KEY);
+
         //        const payer = sb.AnchorUtils.initKeypairFromFile("~/.config/solana/id.json")
         const payer = (provider.wallet as anchor.Wallet).payer;
         const updateIxs = await depqueue.fetchManagedUpdateIxs(crossbarClient, [feed], {
             payer: payer.publicKey,
             variableOverrides: {
-                MASSIVE_API_KEY: process.env.MASSIVE_API_KEY as string,
-                EARNINGSAPI_KEY: process.env.EARNINGSAPI_KEY as string,
+                MASSIVE_API_KEY: process.env.MASSIVE_API_KEY!,
+                EARNINGSAPI_KEY: process.env.EARNINGSAPI_KEY!,
             }
         });
 
