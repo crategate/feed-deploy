@@ -2,7 +2,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { FeedDeploy } from "../target/types/feed_deploy";
 
-import { OracleJob, CrossbarClient, type IOracleJob } from "@switchboard-xyz/common";
+import { OracleJob, CrossbarClient, type IOracleJob, FeedHash } from "@switchboard-xyz/common";
 import * as sb from "@switchboard-xyz/on-demand";
 
 describe("feed-deploy", () => {
@@ -110,12 +110,19 @@ describe("feed-deploy", () => {
         const feedHash = await crossbarClient.storeOracleFeed(feed);
         console.log("FEED HASH::: ", feedHash);
 
-        const [quoteAccount] = sb.OracleQuote.getCanonicalPubkey(depqueue.pubkey, [feedHash.toString()]);
+        const feedId = FeedHash.computeOracleFeedId(feed);
+
+        const [quoteAccount] = sb.OracleQuote.getCanonicalPubkey(depqueue.pubkey, [feedId]);
         console.log("QUOTE ACCOUNT::::", quoteAccount.toBase58());
 
-        const payer = sb.AnchorUtils.initKeypairFromFile("~/.config/solana/id.json")
+        //        const payer = sb.AnchorUtils.initKeypairFromFile("~/.config/solana/id.json")
+        const payer = (provider.wallet as anchor.Wallet).payer;
         const updateIxs = await depqueue.fetchManagedUpdateIxs(crossbarClient, [feed], {
             payer: payer.publicKey,
+            variableOverrides: {
+                MASSIVE_API_KEY: process.env.MASSIVE_API_KEY as string,
+                EARNINGSAPI_KEY: process.env.EARNINGSAPI_KEY as string,
+            }
         });
 
         const dtx = await sb.asV0Tx({
