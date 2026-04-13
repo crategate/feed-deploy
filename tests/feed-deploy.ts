@@ -19,10 +19,7 @@ describe("feed-deploy", () => {
         //const tx = await program.methods.initialize().rpc();
         //console.log("------------", tx);
 
-        const { program } = await sb.AnchorUtils.loadEnv();
-        const queue = await sb.Queue.loadDefault(program!);
-        const crossbar = new CrossbarClient("http://crossbar.switchboard.xyz");
-        const gateway = await queue.fetchGatewayByLatestVersion(crossbar);
+
         const jobs: OracleJob[] = [
 
             OracleJob.fromObject({
