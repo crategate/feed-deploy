@@ -40,13 +40,13 @@ describe("feed-deploy", () => {
                                     stringMapTask: {
                                         mappings: [
                                             {
-                                                key: "\"open\"", value: "1"
+                                                key: "\"open\"", value: "0"
                                             },
                                             {
-                                                key: "\"extended-hours\"", value: "2"
+                                                key: "\"extended-hours\"", value: "1"
                                             },
                                             {
-                                                key: "\"closed\"", value: "0"
+                                                key: "\"closed\"", value: "2"
                                             },
                                             {
                                                 key: "\"halted\"", value: "3"
@@ -70,16 +70,16 @@ describe("feed-deploy", () => {
                                     stringMapTask: {
                                         mappings: [
                                             {
-                                                key: "\"open\"", value: "1"
+                                                key: "\"open\"", value: "0"
                                             },
                                             {
-                                                key: "\"pre-market\"", value: "2"
+                                                key: "\"pre-market\"", value: "1"
                                             },
                                             {
-                                                key: "\"after-hours\"", value: "2"
+                                                key: "\"after-hours\"", value: "1"
                                             },
                                             {
-                                                key: "\"closed\"", value: "0"
+                                                key: "\"closed\"", value: "2"
                                             },
                                             {
                                                 key: "\"halted\"", value: "3"
